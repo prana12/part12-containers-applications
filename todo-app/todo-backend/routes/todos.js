@@ -1,5 +1,6 @@
 const express = require('express');
 const { Todo } = require('../mongo')
+const { getAsync, setAsync } = require("../redis");
 const router = express.Router();
 
 /* GET todos listing. */
@@ -10,6 +11,17 @@ router.get('/', async (_, res) => {
 
 /* POST todo to listing. */
 router.post('/', async (req, res) => {
+  //increment the counter
+  try {
+    const statistics = await getAsync("added_todos");
+    const incStat = await setAsync("added_todos", Number(statistics) + 1);
+    if (incStat !== "OK") {
+      res.status(400).send("was not able to increment number of todos in redis");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+
   const todo = await Todo.create({
     text: req.body.text,
     done: false
