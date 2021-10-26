@@ -9,6 +9,8 @@ services:
     environment: 
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis
+    networks:
+      - todo-net
   
   mongo:
     image: mongo
@@ -21,6 +23,8 @@ services:
     volumes: 
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - ./mongo_data:/data/db
+    networks:
+      - todo-net
   
   redis:
     image: redis
@@ -28,6 +32,11 @@ services:
     command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD
     volumes: # Declare the volume
       - ./redis_data:/data
+    networks:
+      - todo-net
   
 volumes:
   mongo_data:
+
+networks:
+  todo-net:
