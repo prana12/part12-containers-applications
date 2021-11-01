@@ -5,7 +5,7 @@ services:
     image: express-server # Declares which image to use
     build: .              # Declares where to build if image is not found
     ports:                # Declares the ports to publish
-      - 3000:3000
+      - 3001:3001
     environment: 
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis
