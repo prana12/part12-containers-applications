@@ -22,6 +22,21 @@ router.post('/', async (req, res) => {
     res.status(400).send(error.message);
   }
 
+  /* 
+  const getCurrentTodos = await getAsync('todos');
+  const todo = await Todo.create({
+    text: req.body.text,
+    done: false
+  })
+
+  if (getCurrentTodos === null) {
+    const firstTodos = await setAsync('todos', '1');
+    res.send(todo);
+  } else {
+    const addTodos = await setAsync('todos', parseInt(getCurrentTodos) + 1);
+    res.send(todo);
+  }; */
+
   const todo = await Todo.create({
     text: req.body.text,
     done: false
@@ -47,12 +62,24 @@ singleRouter.delete('/', async (req, res) => {
 
 /* GET todo. */
 singleRouter.get('/', async (req, res) => {
-  res.sendStatus(405); // Implement this
+  //res.sendStatus(405); // Implement this
+  res.send(req.todo)
 });
 
 /* PUT todo. */
 singleRouter.put('/', async (req, res) => {
-  res.sendStatus(405); // Implement this
+  //res.sendStatus(405); // Implement this
+  const getCurrentID = req.todo._id;
+  const getCurrentText = req.todo.text;
+  const getCurrentStatus = req.todo.done;
+
+  if (getCurrentStatus === false) {
+    const response = await Todo.findByIdAndUpdate(getCurrentID, { done: true });
+    res.send(`You have successfully updated "${getCurrentText}" text value into true!`);
+  } else {
+    const response = await Todo.findByIdAndUpdate(getCurrentID, { done: false });
+    res.send(`You have successfully updated "${getCurrentText}" text value into false!`);
+  };
 });
 
 router.use('/:id', findByIdMiddleware, singleRouter)
