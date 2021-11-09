@@ -3,7 +3,9 @@ version: '3.8'            # Version 3.8 is quite new and should work
 services:
   app:                    # The name of the service, can be anything
     image: express-server # Declares which image to use
-    build: .              # Declares where to build if image is not found
+    build: # Declares where to build if image is not found
+      context: . # The context will pick this directory as the "build context" 
+      dockerfile: dev.Dockerfile # This will simply tell which dockerfile to read
     ports:                # Declares the ports to publish
       - 3001:3000
     environment: 
