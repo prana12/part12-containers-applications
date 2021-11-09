@@ -7,6 +7,9 @@ COPY . .
 # Change npm ci to npm install since we are going to be in development mode
 RUN npm install
 
+# Testing during the build process
+RUN CI=true npm test
+
 # todo-backend
 #ENV REACT_APP_BACKEND_URL=http://localhost:3001/
 
